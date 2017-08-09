@@ -27,13 +27,15 @@
         (pathname (values file
                           (native-namestring file))))
     (declare (ignorable path namestring))
-    (values
-     (ignore-errors
-      (or
-       #+sbcl (sb-posix:stat-size (sb-posix:stat path))
-       #+cmucl (nth-value 8 (unix:unix-stat namestring))
-       #+ccl (ccl:file-data-size path)
-       #+clisp (os:file-stat-size (os:file-stat path))
-       #+allegro (excl.osi:stat-size (excl.osi:stat path))
+    (handler-case
+        (progn
+          #+sbcl (sb-posix:stat-size (sb-posix:stat path))
+          #+cmucl (nth-value 8 (unix:unix-stat namestring))
+          #+ccl (ccl:file-data-size path)
+          #+clisp (os:file-stat-size (os:file-stat path))
+          #+allegro (excl.osi:stat-size (excl.osi:stat path))
 
-       (file-size-from-stream file))))))
+          #-(or sbcl cmucl ccl clisp allegro)
+          (file-size-from-stream file))
+      (error ()
+        nil))))
