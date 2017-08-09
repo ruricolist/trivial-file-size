@@ -20,6 +20,7 @@ the following Lisps:
 - CLISP
 - Allegro CL
 - ABCL
+- GCL
 
 For other Lisps, we fall back to opening the file and calling
 `file-length` on the stream.
