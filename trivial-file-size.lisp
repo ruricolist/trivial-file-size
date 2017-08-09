@@ -38,6 +38,7 @@ Some platforms (e.g. ABCL) may return 0 when the file does not exist."
           #+ccl (ccl:file-data-size path)
           #+clisp (os:file-stat-size (os:file-stat path))
           #+allegro (excl.osi:stat-size (excl.osi:stat path))
+          #+gcl (nth 1 (sys:stat namestring))
 
           #+abcl
           (let* ((class (java:jclass "java.io.File"))
@@ -45,7 +46,7 @@ Some platforms (e.g. ABCL) may return 0 when the file does not exist."
                  (file (java:jnew class namestring)))
             (java:jcall method file))
 
-          #-(or sbcl cmucl ccl clisp allegro abcl)
+          #-(or sbcl cmucl ccl clisp allegro abcl gcl)
           (file-size-from-stream file))
       (error ()
         nil))))
