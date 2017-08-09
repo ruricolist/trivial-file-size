@@ -6,6 +6,7 @@
   :license "MIT"
   :serial t
   :in-order-to ((test-op (test-op "trivial-file-size/tests")))
+  :depends-on ("uiop")
   :components ((:file "package")
                (:file "trivial-file-size")))
 

@@ -19,6 +19,7 @@ the following Lisps:
 - Clozure CL
 - CLISP
 - Allegro CL
+- ABCL
 
 For other Lisps, we fall back to opening the file and calling
 `file-length` on the stream.

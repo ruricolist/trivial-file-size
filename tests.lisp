@@ -29,4 +29,6 @@
 
 (test no-such-file
   (let ((file (resolve-test-file "no-such-file")))
-    (is (null (file-size-in-octets file)))))
+    (let ((size (file-size-in-octets file)))
+      #+abcl (= size 0)
+      #-abcl (null size))))

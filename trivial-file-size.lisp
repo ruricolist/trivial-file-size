@@ -20,6 +20,10 @@
   file-size-in-octets))
 
 (defun file-size-in-octets (file)
+  "Return the size of FILE in octets.
+Whenever possible, get the size from the file's metadata.
+
+Some platforms (e.g. ABCL) may return 0 when the file does not exist."
   (multiple-value-bind (path namestring)
       (etypecase file
         (string (values (ensure-pathname file :want-pathname t)
@@ -35,7 +39,13 @@
           #+clisp (os:file-stat-size (os:file-stat path))
           #+allegro (excl.osi:stat-size (excl.osi:stat path))
 
-          #-(or sbcl cmucl ccl clisp allegro)
+          #+abcl
+          (let* ((class (java:jclass "java.io.File"))
+                 (method (java:jmethod class "length"))
+                 (file (java:jnew class namestring)))
+            (java:jcall method file))
+
+          #-(or sbcl cmucl ccl clisp allegro abcl)
           (file-size-from-stream file))
       (error ()
         nil))))
