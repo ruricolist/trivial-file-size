@@ -21,6 +21,7 @@ the following Lisps:
 - Allegro CL
 - ABCL
 - GCL
+- LispWorks (on Unix only)
 
 For other Lisps, we fall back to opening the file and calling
 `file-length` on the stream.

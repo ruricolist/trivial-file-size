@@ -40,13 +40,19 @@ Some platforms (e.g. ABCL) may return 0 when the file does not exist."
           #+allegro (excl.osi:stat-size (excl.osi:stat path))
           #+gcl (nth 1 (sys:stat namestring))
 
+          ;; According to trivial-features LispWorks pushes :unix to
+          ;; `*features*`.
+          #+(and lispworks unix)
+          (sys:file-stat-size (sys:get-file-stat file))
+
           #+abcl
           (let* ((class (java:jclass "java.io.File"))
                  (method (java:jmethod class "length"))
                  (file (java:jnew class namestring)))
             (java:jcall method file))
 
-          #-(or sbcl cmucl ccl clisp allegro abcl gcl)
+          #-(or sbcl cmucl ccl clisp allegro abcl gcl
+                (and lispworks unix))
           (file-size-from-stream file))
       (error ()
         nil))))
