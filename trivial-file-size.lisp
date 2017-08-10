@@ -43,7 +43,7 @@ Some platforms (e.g. ABCL) may return 0 when the file does not exist."
           ;; According to trivial-features LispWorks pushes :unix to
           ;; `*features*`.
           #+(and lispworks unix)
-          (sys:file-stat-size (sys:get-file-stat file))
+          (sys:file-stat-size (sys:get-file-stat namestring))
 
           #+abcl
           (let* ((class (java:jclass "java.io.File"))
