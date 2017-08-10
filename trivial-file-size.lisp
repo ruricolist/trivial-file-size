@@ -45,14 +45,45 @@ Some platforms (e.g. ABCL) may return 0 when the file does not exist."
           #+(and lispworks unix)
           (sys:file-stat-size (sys:get-file-stat namestring))
 
-          #+abcl
-          (let* ((class (java:jclass "java.io.File"))
-                 (method (java:jmethod class "length"))
-                 (file (java:jnew class namestring)))
-            (java:jcall method file))
+          #+abcl (stat/abcl namestring)
+
+          ;; Adapted from the ECL implementation of `file-write-date'.
+          ;; TODO Use safe_stat instead.
+          #+(and ecl unix)
+          (stat/ecl path)
 
           #-(or sbcl cmucl ccl clisp allegro abcl gcl
-                (and lispworks unix))
+                (and lispworks unix)
+                (and ecl unix))
           (file-size-from-stream file))
       (error ()
         nil))))
+
+#+abcl
+(defun stat/abcl (namestring)
+  (let* ((class (java:jclass "java.io.File"))
+         (method (java:jmethod class "length"))
+         (file (java:jnew class namestring)))
+    (java:jcall method file)))
+
+#+(and ecl unix)
+(defun stat/ecl (file)
+  (ffi:clines "#include <sys/types.h>")
+  (ffi:clines "#include <sys/stat.h>")
+  (ffi:clines "#include <sys/stat.h>")
+  (ffi:c-inline (file) (:object) :object "{
+        cl_object file_size, filename = si_coerce_to_filename(#0);
+        struct stat filestatus;
+        int output;
+
+        ecl_disable_interrupts();
+        output = stat((char*)filename->base_string.self, &filestatus);
+        ecl_enable_interrupts();
+
+        if (output < 0) {
+                file_size = ECL_NIL;
+        } else {
+                file_size = ecl_make_integer(filestatus.st_size);
+        }
+        @(return) = file_size;
+}"))
