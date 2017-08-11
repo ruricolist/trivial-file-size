@@ -12,6 +12,7 @@
 
 (defsystem "trivial-file-size/tests"
   :description "Tests for trivial-file-size."
+  :author "Paul M. Rodriguez <pmr@ruricolist.com>"
   :license "MIT"
   :serial t
   :perform (test-op (o c)
