@@ -6,7 +6,11 @@
   :license "MIT"
   :serial t
   :in-order-to ((test-op (test-op "trivial-file-size/tests")))
-  :depends-on ("uiop")
+  :depends-on ((:feature :sbcl    (:require :sb-posix))
+               (:feature :allegro (:require "osi"))
+               (:feature :cmucl   (:require :unix))
+               (:feature :clisp   (:require "syscalls"))
+               "uiop")
   :components ((:file "package")
                (:file "trivial-file-size")))
 
