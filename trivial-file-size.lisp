@@ -47,8 +47,6 @@ Some platforms (e.g. ABCL) may return 0 when the file does not exist."
 
           #+abcl (stat/abcl namestring)
 
-          ;; Adapted from the ECL implementation of `file-write-date'.
-          ;; TODO Use safe_stat instead.
           #+(and ecl unix)
           (stat/ecl path)
 
@@ -68,6 +66,7 @@ Some platforms (e.g. ABCL) may return 0 when the file does not exist."
 
 #+(and ecl unix)
 (defun stat/ecl (file)
+  ;; Adapted from the ECL implementation of `file-write-date'.
   (ffi:clines "#include <sys/types.h>")
   (ffi:clines "#include <sys/stat.h>")
   (ffi:clines "#include <sys/stat.h>")
