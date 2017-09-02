@@ -69,7 +69,6 @@ Some platforms (e.g. ABCL) may return 0 when the file does not exist."
   ;; Adapted from the ECL implementation of `file-write-date'.
   (ffi:clines "#include <sys/types.h>")
   (ffi:clines "#include <sys/stat.h>")
-  (ffi:clines "#include <sys/stat.h>")
   (ffi:c-inline (file) (:object) :object "{
         cl_object file_size, filename = si_coerce_to_filename(#0);
         struct stat filestatus;
