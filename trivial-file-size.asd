@@ -22,5 +22,5 @@
   :perform (test-op (o c)
                     (symbol-call :trivial-file-size/tests
                                  '#:run-file-size-tests))
-  :depends-on ("fiveam")
+  :depends-on ("fiveam" "trivial-file-size")
   :components ((:file "tests")))
