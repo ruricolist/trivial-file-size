@@ -28,7 +28,7 @@
     (is (= 2 (file-size-in-octets file)))))
 
 (test no-such-file
-  (let ((file (resolve-test-file "no-such-file")))
-    (let ((size (file-size-in-octets file)))
-      #+abcl (= size 0)
-      #-abcl (null size))))
+      (let ((file (resolve-test-file "no-such-file")))
+        (let ((size (file-size-in-octets file)))
+          (is #+abcl (= size 0)
+              #-abcl (null size)))))

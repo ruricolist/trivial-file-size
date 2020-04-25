@@ -49,8 +49,9 @@ Some platforms (e.g. ABCL) may return 0 when the file does not exist."
 
           #+(and ecl unix)
           (stat/ecl path)
+          #+clasp (nth-value 0 (ext:stat namestring))
 
-          #-(or sbcl cmucl ccl clisp allegro abcl gcl
+          #-(or sbcl cmucl ccl clasp clisp allegro abcl gcl
                 (and lispworks unix)
                 (and ecl unix))
           (file-size-from-stream file))
