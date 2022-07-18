@@ -5,7 +5,7 @@
 ;;; "trivial-file-size" goes here. Hacks and glory await!
 
 (deftype file-size ()
-  #+sbcl '(values (or null (integer 0 *)) &optional)
+  #+sbcl '(values (or null fixnum) &optional)
   #-sbcl '(or null (integer 0 *)))
 
 (defun file-size-from-stream (file)
