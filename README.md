@@ -22,7 +22,7 @@ the following Lisps:
 - Allegro CL
 - ABCL
 - GCL
-- LispWorks (on Unix only)
+- LispWorks
 - ECL (on Unix only)
 
 For other Lisps and platforms, we fall back to opening the file and
