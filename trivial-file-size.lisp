@@ -46,14 +46,14 @@ Some platforms (e.g. ABCL) may return 0 when the file does not exist."
           #+(and lispworks unix)
           (sys:file-stat-size (sys:get-file-stat namestring))
 
-          #+lispworks8
+          #+(and lispworks (not (or unix lispworks4 lispworks5 lispworks6 lispworks7)))
           (block nil
             (hcl:fast-directory-files
              file
              #'(lambda (f handle)
                  (declare (ignore f))
                  (return (hcl:fdf-handle-size handle)))))
-          #+(and lispworks (not lispworks8))
+          #+(and lispworks (not unix) (or lispworks4 lispworks5 lispworks6 lispworks7))
           (block nil
             (hcl:fast-directory-files
              file
