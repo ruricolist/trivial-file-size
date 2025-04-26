@@ -68,7 +68,7 @@ Some platforms (e.g. ABCL) may return 0 when the file does not exist."
           #+clasp (nth-value 0 (ext:stat namestring))
 
           #-(or sbcl cmucl ccl clasp clisp allegro abcl gcl
-                (and lispworks unix)
+                lispworks
                 (and ecl unix))
           (file-size-from-stream file))
       (error ()
